@@ -1,10 +1,11 @@
 class DayController < ApplicationController
   def home
-    @time = (Time.now - 14400)
+    @time = Time.now.in_time_zone('Eastern Time (US & Canada)')
     @localtime = @time.asctime
-    if 1 == 1
-      print "Hello there"
-    end
+    @day = " "
+    @class_start = " "
+    @class_end = " "
+    @response = " "
   end
 
   def mon

@@ -1,11 +1,58 @@
-<h1 align = "center">The current date and time is:</h1>
-<strong><h3 align = "center"><%= @localtime %></h3></strong>
+<% 
 
-<ul>
+#initializing bus schedule
+bus_schedule = {
+  dynes1: Time.now,
+  dynes2: Time.now,
+  dynes3: Time.now,
+  rideau1: Time.now,
+  rideau2: Time.now,
+  rideau3: Time.now
+}
+
+if @time.monday? || @time.thursday? || @time.sunday?
+	bus_schedule[:dynes1] = Time.new(@time.year, @time.month, @time.day, 12, 00, 0)
+	bus_schedule[:dynes2] = Time.new(@time.year, @time.month, @time.day, 12, 15, 0)
+	bus_schedule[:dynes3] = Time.new(@time.year, @time.month, @time.day, 12, 30, 0)
+	bus_schedule[:rideau1] = Time.new(@time.year, @time.month, @time.day, 21, 17, 0)
+	bus_schedule[:rideau2] = Time.new(@time.year, @time.month, @time.day, 21, 32, 0)
+	bus_schedule[:rideau3] = Time.new(@time.year, @time.month, @time.day, 21, 53, 0)
+elsif @time.tuesday? || @time.wednesday? || @time.friday?
+	bus_schedule[:dynes1] = Time.new(@time.year, @time.month, @time.day, 9, 35, 0)
+	bus_schedule[:dynes2] = Time.new(@time.year, @time.month, @time.day, 9, 50, 0)
+	bus_schedule[:dynes3] = Time.new(@time.year, @time.month, @time.day, 10, 5, 0)
+	bus_schedule[:rideau1] = Time.new(@time.year, @time.month, @time.day, 18, 00, 0)
+	bus_schedule[:rideau2] = Time.new(@time.year, @time.month, @time.day, 18, 14, 0)
+	bus_schedule[:rideau3] = Time.new(@time.year, @time.month, @time.day, 18, 23, 0)
+else
+	bus_schedule[:dynes1] = Time.new(@time.year, @time.month, @time.day, 11, 51, 0)
+	bus_schedule[:dynes2] = Time.new(@time.year, @time.month, @time.day, 12, 7, 0)
+	bus_schedule[:dynes3] = Time.new(@time.year, @time.month, @time.day, 12, 21, 0)
+	bus_schedule[:rideau1] = Time.new(@time.year, @time.month, @time.day, 9, 17, 0)
+	bus_schedule[:rideau2] = Time.new(@time.year, @time.month, @time.day, 9, 32, 0)
+	bus_schedule[:rideau3] = Time.new(@time.year, @time.month, @time.day, 9, 53, 0)
+end
+
+bus_schedule.each do |key, value|
+	if @time.sunday?
+		@response = "There is no class today! But go do some coding!"
+		break;
+	else @time <= bus_schedule[key]
+		@response = "Your next bus is at #{bus_schedule[key].strftime("%I:%M%p")}"
+		break;
+	end
+end
+%>
+
+<h1 align = "center">The current date and time is:</h1>
+<h3 align = "center"><%= @localtime %><p><%= @response %></h3>
+
+
+<!-- <ul>
 	<li><a href="/day/Mon">Monday</a></li>
 	<li><a href="/day/Tue">Tuesday</a></li>
 	<li><a href="/day/Wed">Wednesday</a></li>
 	<li><a href="/day/Thu">Thursday</a></li>
 	<li><a href="/day/Fri">Friday</a></li>
 	<li><a href="/day/Sat">Saturday</a></li>
-</ul>
+</ul> -->
